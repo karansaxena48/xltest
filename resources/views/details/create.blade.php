@@ -3,31 +3,33 @@
 @section('content')
 <h2>Create User</h2>
 
-<form>
+<form id='dform'>
     <div>
         <label for="name">Name</label>
-        <input type="text" id="name">
+        <input type="text" id="name" name="name">
     </div>
     <div>
         <label for="email">Email</label>
-        <input type="email" id="email">
+        <input type="email" id="email" name="email">
     </div>
     <div>
         <label for="country_id">Country</label>
-        <select id="country_id"></select>
+        <select id="country_id" name="country_id"></select>
     </div>
     <div>
         <label for="state_id">State</label>
-        <select id="state_id"></select>
+        <select id="state_id" name="state_id"></select>
     </div>
     <div>
         <label for="city_id">City</label>
-        <select id="city_id"></select>
+        <select id="city_id" name="city_id"></select>
     </div>
     <div>
-        <input type="button" id="submit" value="Submit">
+        <input type="submit" id="submit" value="Submit">
     </div>
 </form>
+<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+{!! JsValidator::formRequest('App\Http\Requests\DetailsRequest'); !!}
 <script>
     $(function(){
         reset();
@@ -42,7 +44,10 @@
             getCities($('#state_id option:selected').val());
         });
 
-        $('#submit').click(function() {
+$("#dform").submit(function(e){
+    e.preventDefault();
+//   });
+//         $('#submit').click(function() {
             let name = $('#name').val();
             let email = $('#email').val();
             let country_id = $('#country_id option:selected').val();
@@ -70,6 +75,7 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 url:"{{route('details.store')}}",
                 method:'post',
+                async: false,
                 data:{name: name, email: email, country_id: country_id, state_id: state_id, city_id: city_id},
                 success: function (data) {
                     console.log(data);

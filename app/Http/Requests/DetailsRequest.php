@@ -29,7 +29,7 @@ class DetailsRequest extends FormRequest
             'email' => [
                 'required',
                 'email',
-                Rule::unique('details', 'email')
+                'unique:details'
             ],
             'country_id' => 'required',
             'state_id' => 'required',
